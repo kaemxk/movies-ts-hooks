@@ -1,0 +1,60 @@
+.rating {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+
+.rating span {
+    padding-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+}
+
+.col {
+    display: flex;
+    flex-direction: row;
+}
+
+.col:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.rate {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 6px;
+}
+
+.wrap {
+    padding-left: 12px;
+}
+
+.title {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+@media (max-width: 1200px) {
+    .title {
+        margin-top: 6px;
+    }
+    .item {
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .title {
+        max-width: 200px;
+    }
+}

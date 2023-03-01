@@ -8,8 +8,12 @@ import MovieList from '../MovieList/MovieList'
 import MovieService from '../../services/MovieService'
 import { MyContext } from '../Context/Context'
 
-const SearchChildren = () => {
-  const [value, setValue] = useState<string>('')
+interface ITabChildrenProps {
+  tab: string
+}
+
+const TabChildren = ({ tab }: ITabChildrenProps) => {
+  const [value, setValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const onSearchChangeHandler = (value: string) => {
@@ -19,20 +23,15 @@ const SearchChildren = () => {
 
   return (
     <React.Fragment>
-      <Search onChange={onSearchChangeHandler} />
-      <MovieList query={value} loading={isLoading} rated={false} />
+      {tab === 'Rated' ? null : <Search onChange={onSearchChangeHandler} />}
+      <MovieList query={value} loading={isLoading} tab={tab} />
     </React.Fragment>
   )
 }
 
-const RatedChildren = () => {
-  const [isLoading, setIsLoading] = useState(false)
-
-  return <MovieList loading={isLoading} rated={true} />
-}
-
 const App = () => {
   const [genres, setGenres] = useState([])
+  const [tab, setTab] = useState('Search')
 
   useEffect(() => {
     new MovieService().createGuestSession().then((res) => {
@@ -45,30 +44,59 @@ const App = () => {
       .getGenres()
       .then((res) => res.result)
       .then((res) => {
-        setGenres(res)
+        setGenres(res.genres)
       })
   }, [])
 
   const items: TabsProps['items'] = [
     {
-      key: '1',
+      key: 'Search',
       label: 'Search',
-      children: <SearchChildren />,
+      children: <TabChildren tab={tab} />,
     },
     {
-      key: '2',
+      key: 'Rated',
       label: 'Rated',
-      children: <RatedChildren />,
+      children: <TabChildren tab={tab} />,
     },
   ]
 
   return (
     <div className="wrapper">
       <MyContext.Provider value={genres}>
-        <Tabs defaultActiveKey="1" items={items} centered={true} destroyInactiveTabPane={true} />
+        <Tabs
+          defaultActiveKey="1"
+          items={items}
+          centered={true}
+          destroyInactiveTabPane={true}
+          onChange={(tabName) => setTab(() => tabName)}
+        />
       </MyContext.Provider>
     </div>
   )
 }
 
 export default App
+
+// const SearchChildren = () => {
+//   const [value, setValue] = useState<string>('')
+//   const [isLoading, setIsLoading] = useState(false)
+//
+//   const onSearchChangeHandler = (value: string) => {
+//     setValue(value)
+//     setIsLoading(true)
+//   }
+//
+//   return (
+//     <React.Fragment>
+//       <Search onChange={ onSearchChangeHandler }/>
+//       <MovieList query={ value } loading={ isLoading } rated={ false }/>
+//     </React.Fragment>
+//   )
+// }
+//
+// const RatedChildren = () => {
+//   const [isLoading, setIsLoading] = useState(false)
+//
+//   return <MovieList loading={ isLoading } rated={ true }/>
+// }

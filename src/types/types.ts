@@ -9,14 +9,3 @@ export interface IMovie {
 
   [x: string]: any
 }
-
-export interface MovieListProps {
-  query?: string
-  loading: boolean
-  rated?: boolean
-}
-
-export interface IGenre {
-  id: number
-  name: string
-}

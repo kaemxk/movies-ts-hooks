@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from 'antd'
 import './Search.css'
 
-const Search = ({ onChange, value }: any) => {
+interface ISearchProps {
+  value?: string
+  onChange: (text: string) => void
+}
+
+const Search = ({ onChange, value }: ISearchProps) => {
   const [text, setText] = useState('')
 
   useEffect(() => {

@@ -3,9 +3,10 @@ import './MovieCard.css'
 import { Col, Rate, Row, Image, Typography, Button } from 'antd'
 import { format } from 'date-fns'
 
-import { IGenre, IMovie } from '../../types/types'
+import { IMovie } from '../../types/types'
 import { MyContext } from '../Context/Context'
 import MovieService from '../../services/MovieService'
+import { borderColors } from '../../variables/vars'
 
 const { Title, Paragraph } = Typography
 
@@ -22,13 +23,13 @@ const MovieCard = ({
 }: IMovie) => {
   let borderColor = '#000'
   if (vote_average <= 3) {
-    borderColor = '#E90000'
+    borderColor = borderColors.Red
   } else if (vote_average <= 5) {
-    borderColor = '#E97E00'
+    borderColor = borderColors.Orange
   } else if (vote_average <= 7) {
-    borderColor = '#E9D100'
+    borderColor = borderColors.Yellow
   } else {
-    borderColor = '#66E900'
+    borderColor = borderColors.Green
   }
 
   const cutDescription = (description: string) => {
@@ -113,9 +114,13 @@ const MovieCard = ({
   return <Content />
 }
 
+interface IGenre {
+  id: number
+  name: string
+}
+
 const Genres = ({ arr }: { arr: number[] }) => {
-  const res: any = useContext(MyContext)
-  const genresList: IGenre[] = res.genres
+  const genresList: IGenre[] = useContext(MyContext)
   const newArr: string[] = []
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < genresList.length; j++) {

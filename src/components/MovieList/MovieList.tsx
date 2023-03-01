@@ -3,10 +3,22 @@ import { Col, Pagination, Row, Spin } from 'antd'
 
 import MovieCard from '../MovieCard/MovieCard'
 import MovieService from '../../services/MovieService'
-import { IMovie, MovieListProps } from '../../types/types'
+import { IMovie } from '../../types/types'
 import './MovieList.css'
 
-const MovieList = ({ query, loading, rated }: MovieListProps) => {
+interface IMovieListProps {
+  query?: string
+  loading: boolean
+  tab: string
+}
+
+interface IData {
+  movies: IMovie[]
+  totalPages: number
+  url: string
+}
+
+const MovieList = ({ query, loading, tab }: IMovieListProps) => {
   const [movies, setMovies] = useState<IMovie[]>([])
   const [url, setUrl] = useState<string>('')
   const [totalPages, setTotalPages] = useState<number>(1)
@@ -17,33 +29,21 @@ const MovieList = ({ query, loading, rated }: MovieListProps) => {
     return url.split('?').slice(0, 1).join()
   }
 
-  const doEverythingWithState = (a: any) => {
-    if (rated) {
-      if (a.result.results.length === 0) {
-        setIsError(true)
-        setIsLoading(false)
-        return
-      }
-      setMovies(a.result.results)
-      setTotalPages(a.totalPages)
-      setIsLoading(false)
-      setIsError(false)
-      return
-    }
-    if (a.movies.length === 0) {
+  const doEverythingWithState = (data: IData) => {
+    if (data.movies.length === 0) {
       setIsError(true)
       setIsLoading(false)
       return
     }
-    setMovies(a.movies)
-    setUrl(urlHandler(a.url))
-    setTotalPages(a.totalPages)
+    setMovies(data.movies)
+    setUrl(urlHandler(data.url))
+    setTotalPages(data.totalPages)
     setIsLoading(false)
     setIsError(false)
   }
 
   const movieHandler = (query?: string) => {
-    if (rated) {
+    if (tab === 'Rated') {
       new MovieService().getRatedMovies().then((res) => doEverythingWithState(res))
       return
     }

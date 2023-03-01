@@ -77,6 +77,10 @@ export default class MovieService {
   async getRatedMovies() {
     const session = localStorage.getItem('session')
     const a = await this.getResource(`${this._apiBase}/guest_session/${session}/rated/movies`)
-    return a
+    return {
+      movies: a.result.results,
+      totalPages: a.result.total_pages,
+      url: a.response.url,
+    }
   }
 }

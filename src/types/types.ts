@@ -6,6 +6,19 @@ export interface IMovie {
   id: number
   release_date: string
   genre_ids: number[]
+  width: number
+  rating: number
+}
 
-  [x: string]: any
+export interface IMovieCardProps {
+  title: string
+  overview: string
+  vote_average: number
+  poster_path: string
+  release_date: string
+  genre_ids: number[]
+  rating: number
+  borderColor: string
+  cutDescription: (description: string) => string | JSX.Element
+  rateChangeHandler: (value: number) => void
 }

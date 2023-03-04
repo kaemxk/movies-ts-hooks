@@ -77,26 +77,3 @@ const App = () => {
 }
 
 export default App
-
-// const SearchChildren = () => {
-//   const [value, setValue] = useState<string>('')
-//   const [isLoading, setIsLoading] = useState(false)
-//
-//   const onSearchChangeHandler = (value: string) => {
-//     setValue(value)
-//     setIsLoading(true)
-//   }
-//
-//   return (
-//     <React.Fragment>
-//       <Search onChange={ onSearchChangeHandler }/>
-//       <MovieList query={ value } loading={ isLoading } rated={ false }/>
-//     </React.Fragment>
-//   )
-// }
-//
-// const RatedChildren = () => {
-//   const [isLoading, setIsLoading] = useState(false)
-//
-//   return <MovieList loading={ isLoading } rated={ true }/>
-// }

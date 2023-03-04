@@ -1,10 +1,11 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Pagination, Row, Spin } from 'antd'
 
 import MovieCard from '../MovieCard/MovieCard'
 import MovieService from '../../services/MovieService'
 import { IMovie } from '../../types/types'
 import './MovieList.css'
+import useWindowWidth from '../../utils/useWindowWidth'
 
 interface IMovieListProps {
   query?: string
@@ -20,7 +21,7 @@ interface IData {
 
 const MovieList = ({ query, loading, tab }: IMovieListProps) => {
   const [movies, setMovies] = useState<IMovie[]>([])
-  const [url, setUrl] = useState<string>('')
+  const [url, setUrl] = useState('')
   const [totalPages, setTotalPages] = useState<number>(1)
   const [isLoading, setIsLoading] = useState(loading)
   const [isError, setIsError] = useState(false)
@@ -60,20 +61,6 @@ const MovieList = ({ query, loading, tab }: IMovieListProps) => {
     setIsLoading(loading)
     movieHandler(query)
   }, [query, loading])
-
-  function useWindowWidth() {
-    const [windowWidth, setWindowWidth] = useState(0)
-    useLayoutEffect(() => {
-      function updateSize() {
-        setWindowWidth(window.innerWidth)
-      }
-
-      window.addEventListener('resize', updateSize)
-      updateSize()
-      return () => window.removeEventListener('resize', updateSize)
-    }, [])
-    return windowWidth
-  }
 
   const width = useWindowWidth()
 

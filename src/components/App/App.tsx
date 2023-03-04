@@ -34,18 +34,19 @@ const App = () => {
   const [tab, setTab] = useState('Search')
 
   useEffect(() => {
-    new MovieService().createGuestSession().then((res) => {
-      localStorage.setItem('session', res.guest_session_id)
-    })
+    const fetchData = async () => {
+      const movieService = await new MovieService().createGuestSession()
+      localStorage.setItem('session', movieService.guest_session_id)
+    }
+
+    localStorage.removeItem('rated')
+    fetchData()
   }, [])
 
-  useMemo(() => {
-    new MovieService()
-      .getGenres()
-      .then((res) => res.result)
-      .then((res) => {
-        setGenres(res.genres)
-      })
+  useMemo(async () => {
+    const movieService = await new MovieService().getGenres()
+    const res = await movieService.result
+    return setGenres(res.genres)
   }, [])
 
   const items: TabsProps['items'] = [

@@ -7,6 +7,7 @@ import { IMovieCardProps } from '../../types/types'
 const { Title, Paragraph } = Typography
 
 const MovieCardDesktop = ({
+  id,
   title,
   overview,
   vote_average,
@@ -18,6 +19,14 @@ const MovieCardDesktop = ({
   rateChangeHandler,
   borderColor,
 }: IMovieCardProps) => {
+  let rate
+  if (localStorage.getItem('rated') !== null) {
+    const rated = JSON.parse(localStorage.getItem('rated')!)
+    rate = rated[id]
+  } else {
+    rate = rating
+  }
+
   return (
     <Row wrap={false} justify={'start'}>
       <Col style={{ maxHeight: '281px', maxWidth: '183px' }}>
@@ -41,7 +50,7 @@ const MovieCardDesktop = ({
         )}
         <Genres arr={genre_ids} />
         <Paragraph style={{ marginTop: '10px' }}>{cutDescription(overview)}</Paragraph>
-        <Rate count={10} onChange={rateChangeHandler} defaultValue={rating} />
+        <Rate count={10} onChange={rateChangeHandler} defaultValue={rate} />
       </Col>
     </Row>
   )

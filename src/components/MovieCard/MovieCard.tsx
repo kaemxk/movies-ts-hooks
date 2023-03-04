@@ -45,6 +45,7 @@ const MovieCard = ({
     if (width >= 1200) {
       return (
         <MovieCardDesktop
+          id={id}
           title={title}
           overview={overview}
           vote_average={vote_average}
@@ -60,6 +61,7 @@ const MovieCard = ({
     } else {
       return (
         <MovieCardMobile
+          id={id}
           title={title}
           overview={overview}
           vote_average={vote_average}

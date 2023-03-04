@@ -1,3 +1,7 @@
+interface localStorageRated {
+  [x: string]: number
+}
+
 export default class MovieService {
   _apiBase = 'https://api.themoviedb.org/3'
   _apiKey = '?api_key=29aa99406ab37ae56592216823a7b9fc'
@@ -5,13 +9,9 @@ export default class MovieService {
   async getResource(url: string, page = 1, query?: string) {
     let response
 
-    // if (session) {
-    //   response = await fetch(`${ url }${ this._apiKey }&page=${ page }`)
-    // } else {
     query
       ? (response = await fetch(`${url}${this._apiKey}&page=${page}&query=${query}`))
       : (response = await fetch(`${url}${this._apiKey}&page=${page}`))
-    // }
 
     if (!response.ok) {
       throw new Error(`Could not fetch ${url}, received ${response.status}`)
@@ -63,6 +63,16 @@ export default class MovieService {
 
   async rateMovie(rate: number, id: number) {
     const session = localStorage.getItem('session')
+    const key = String(id)
+    if (localStorage.getItem('rated') === null) {
+      const obj: localStorageRated = {}
+      obj[key] = rate
+      localStorage.setItem('rated', JSON.stringify(obj))
+    } else {
+      const obj: localStorageRated = JSON.parse(localStorage.getItem('rated')!)
+      obj[key] = rate
+      localStorage.setItem('rated', JSON.stringify(obj))
+    }
     return await fetch(`${this._apiBase}/movie/${id}/rating${this._apiKey}&guest_session_id=${session}`, {
       method: 'POST',
       headers: {

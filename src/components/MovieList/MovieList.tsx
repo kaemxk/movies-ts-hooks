@@ -43,16 +43,19 @@ const MovieList = ({ query, loading, tab }: IMovieListProps) => {
     setIsError(false)
   }
 
-  const movieHandler = (query?: string) => {
+  const movieHandler = async (query?: string) => {
     if (tab === 'Rated') {
-      new MovieService().getRatedMovies().then((res) => doEverythingWithState(res))
+      const res = await new MovieService().getRatedMovies()
+      doEverythingWithState(res)
       return
     }
     if (query !== '' && query) {
-      new MovieService().searchMovie(query).then((res) => doEverythingWithState(res))
+      const res = await new MovieService().searchMovie(query)
+      doEverythingWithState(res)
       return
     } else {
-      new MovieService().getPopularMovies().then((res) => doEverythingWithState(res))
+      const res = await new MovieService().getPopularMovies()
+      doEverythingWithState(res)
       return
     }
   }
@@ -60,7 +63,7 @@ const MovieList = ({ query, loading, tab }: IMovieListProps) => {
   useEffect(() => {
     setIsLoading(loading)
     movieHandler(query)
-  }, [query, loading])
+  }, [query])
 
   const width = useWindowWidth()
 
@@ -94,8 +97,9 @@ const MovieList = ({ query, loading, tab }: IMovieListProps) => {
   const error = !isLoading && isError ? <h2 style={{ margin: '0 auto' }}>Ничего не найдено :(</h2> : null
   const loader = isLoading && !isError ? <Spin size={'large'} style={{ margin: '0 auto' }} /> : null
 
-  const pageChangeHandler = (page: number) => {
-    new MovieService().switchPage(url, page, query).then((res) => doEverythingWithState(res))
+  const pageChangeHandler = async (page: number) => {
+    const res = await new MovieService().switchPage(url, page, query)
+    doEverythingWithState(res)
   }
 
   return (

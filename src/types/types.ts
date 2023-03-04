@@ -15,6 +15,7 @@ export interface IMovieCardProps {
   overview: string
   vote_average: number
   poster_path: string
+  id: number
   release_date: string
   genre_ids: number[]
   rating: number
